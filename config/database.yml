@@ -24,7 +24,7 @@ default: &default
 development:
   <<: *default
   database: belt_reviewer_development
-
+  password:
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: belt_reviewer_production
-  username: belt_reviewer
-  password: <%= ENV['BELT_REVIEWER_DATABASE_PASSWORD'] %>
+  # username: belt_reviewer
+  # password: <%= ENV['BELT_REVIEWER_DATABASE_PASSWORD'] %>
