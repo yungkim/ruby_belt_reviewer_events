@@ -1,0 +1,67 @@
+<ul>
+  <li><a class="active" href="/events">Events Dashboard</a></li>
+  <li><a href="#">Edit Profile</a></li>
+  <li><a href="/users/logout">Logout</a></li>
+  <li style="float:right"><a href="#"><%= User.find(session[:user_id]).first_name %> <%= User.find(session[:user_id]).last_name %> (<%= User.find(session[:user_id]).email %>)</a></li>
+</ul>
+
+<fieldset style="max-width:500px">
+    <legend><h1><%= @event.name %></h1></legend>
+        <p>Host: <%= @event.user.first_name  %> <%= @event.user.last_name  %></p>
+        <p>Date: <%= @event.date  %></p>
+        <p>Location: <%= @event.location  %>, <%= @event.state %></p>
+        <p>People who are joining the event: <%=@event.joins.count%></p>
+        <% if @event.joins != [] %>
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Location</td>
+                    <td>State</td>
+                </tr>
+            </thead>
+            <tbody class="zebra">
+                <% @event.joins.each do |e| %>
+                <tr>
+                    <td><%= e.user.first_name %></td>
+                    <td><%= e.user.location %></td>
+                    <td><%= e.user.state %></td>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+        <% end %>
+    </fieldset>
+
+<fieldset style="max-width:500px">
+    <legend>Add Comment:</legend>
+    <textarea rows="10" cols="75" style="margin:1em">
+        <% @comments.each do |c| %>
+        <%= c.user.first_name%> says: <%= c.comment%>
+        - - - - - - - - - - - - - - - 
+        <% end %>
+    </textarea>
+    <%= form_for @comment, :url => url_for(:controller => 'comments', :action => "create") do |f| %>
+    <%= f.hidden_field :user_id, value: session[:user_id] %>
+    <%= f.hidden_field :event_id, value: @event.id %>
+    <table>
+        <tr>
+            <td><%= f.text_field :comment, size: 80, :placeholder => "Comment" %></td>
+        </tr>
+        <tr>
+            <td style="text-align:right">
+                <%= submit_tag 'Add Comment' %>
+            </td>
+        </tr>
+    </table>
+    <% end %>
+</fieldset>
+
+<div style="overflow:auto;color:red">
+    <p style="color:blue"><%= flash[:notice] %></p>
+    <% if flash[:errors] %>
+        <% flash[:errors].each do |e| %>
+        <p><%= e%></p>
+        <% end %>
+    <% end %>
+</div>

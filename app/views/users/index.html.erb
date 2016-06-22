@@ -1,0 +1,127 @@
+<h1>Welcome</h1>
+<div style="overflow:auto">
+    <fieldset style="float:left">
+        <legend>Registration</legend>
+        <%= form_for @user, :url => { :action => "create" } do |f| %>
+        <table>        
+            <tr>
+                <td>First Name:</td>
+                <td><%= f.text_field :first_name, :placeholder => "First Name" %></td>
+            </tr>
+            <tr>
+                <td>Last Name:</td>
+                <td><%= f.text_field :last_name, :placeholder => "Last Name" %></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><%= f.text_field :email, :placeholder => "Email" %></td>
+            </tr>        
+            <tr>
+                <td>Location:</td>
+                <td>
+                    <%= f.text_field :location, :placeholder => "City" %>
+                    <%= f.select :state, options_for_select(([
+                        ["AK - Alaska", "AK"], 
+                        ["AL - Alabama", "AL"], 
+                        ["AR - Arkansas", "AR"], 
+                        ["AS - American Samoa", "AS"], 
+                        ["AZ - Arizona", "AZ"], 
+                        ["CA - California", "CA"], 
+                        ["CO - Colorado", "CO"], 
+                        ["CT - Connecticut", "CT"], 
+                        ["DC - District of Columbia", "DC"], 
+                        ["DE - Delaware", "DE"], 
+                        ["FL - Florida", "FL"], 
+                        ["GA - Georgia", "GA"], 
+                        ["GU - Guam", "GU"], 
+                        ["HI - Hawaii", "HI"], 
+                        ["IA - Iowa", "IA"], 
+                        ["ID - Idaho", "ID"], 
+                        ["IL - Illinois", "IL"], 
+                        ["IN - Indiana", "IN"], 
+                        ["KS - Kansas", "KS"], 
+                        ["KY - Kentucky", "KY"], 
+                        ["LA - Louisiana", "LA"], 
+                        ["MA - Massachusetts", "MA"], 
+                        ["MD - Maryland", "MD"], 
+                        ["ME - Maine", "ME"], 
+                        ["MI - Michigan", "MI"], 
+                        ["MN - Minnesota", "MN"], 
+                        ["MO - Missouri", "MO"], 
+                        ["MS - Mississippi", "MS"], 
+                        ["MT - Montana", "MT"], 
+                        ["NC - North Carolina", "NC"], 
+                        ["ND - North Dakota", "ND"], 
+                        ["NE - Nebraska", "NE"], 
+                        ["NH - New Hampshire", "NH"], 
+                        ["NJ - New Jersey", "NJ"], 
+                        ["NM - New Mexico", "NM"], 
+                        ["NV - Nevada", "NV"], 
+                        ["NY - New York", "NY"], 
+                        ["OH - Ohio", "OH"], 
+                        ["OK - Oklahoma", "OK"], 
+                        ["OR - Oregon", "OR"], 
+                        ["PA - Pennsylvania", "PA"], 
+                        ["PR - Puerto Rico", "PR"], 
+                        ["RI - Rhode Island", "RI"], 
+                        ["SC - South Carolina", "SC"], 
+                        ["SD - South Dakota", "SD"], 
+                        ["TN - Tennessee", "TN"], 
+                        ["TX - Texas", "TX"], 
+                        ["UT - Utah", "UT"], 
+                        ["VA - Virginia", "VA"], 
+                        ["VI - Virgin Islands", "VI"], 
+                        ["VT - Vermont", "VT"], 
+                        ["WA - Washington", "WA"], 
+                        ["WI - Wisconsin", "WI"], 
+                        ["WV - West Virginia", "WV"], 
+                        ["WY - Wyoming", "WY"]
+                        ])), :prompt => "State" %>
+                </td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><%= f.password_field :password, :placeholder => "Password" %></td>
+            </tr>
+            <tr>
+                <td style="font-size:0.9em;color:grey">*Password should be at leat 8 characters</td>
+            </tr>
+            <tr>
+                <td>Confirm PW:</td>
+                <td><%= f.password_field :password_confirmation, :placeholder => "Confirm Password" %></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align:right"><%= submit_tag 'Register' %></td>
+            </tr>
+        </table>
+        <% end %>
+    </fieldset>
+    <fieldset style="max-width:500px">
+        <legend>Login</legend>
+        <%= form_for @user, :url => { :action => "login" } do |f| %>
+        <table>
+            <tr>
+                <td>Email:</td>
+                <td><%= f.text_field :email, :placeholder => "Email" %></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><%= f.password_field :password, :placeholder => "Password" %></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align:right"><%= submit_tag 'Login' %></td>
+            </tr>            
+        </table>
+        <% end %>
+    </fieldset>
+</div>
+
+<div style="overflow: auto;color:red">
+    <% if flash[:errors] %>
+        <% flash[:errors].each do |e| %>
+        <p><%= e%></p>
+        <% end %>
+    <% end %>
+</div>

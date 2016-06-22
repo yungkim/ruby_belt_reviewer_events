@@ -1,0 +1,172 @@
+<ul>
+  <li><a class="active" href="/events">Events Dashboard</a></li>
+  <li><a href="/users/<%= session[:user_id] %>">Edit Profile</a></li>
+  <li><a href="/users/logout">Logout</a></li>
+  <li style="float:right"><a href="/users/<%= session[:user_id] %>"><%= User.find(session[:user_id]).first_name %> <%= User.find(session[:user_id]).last_name %> (<%= User.find(session[:user_id]).email %>)</a></li>
+</ul>
+
+<% if session[:user_id]%>
+<h1>Welcome, <%= User.find(session[:user_id]).first_name %>!</h1>
+<% end %>
+<fieldset style="max-width:500px">
+    <legend>Add Event</legend>
+    <%= form_for @event, :url => { :action => "create" } do |f| %>
+    <%= f.hidden_field :user_id, value: session[:user_id] %>
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><%= f.text_field :name, :placeholder => "Name" %></td>
+        </tr>
+        <tr>
+            <td>Date:</td>
+            <td><%= f.date_field :date %></td>
+        </tr>
+        <tr>
+            <td>Location:</td>
+            <td>
+                <%= f.text_field :location, :placeholder => "City" %>
+                <%= f.select :state, options_for_select(([
+                    ["AK - Alaska", "AK"], 
+                    ["AL - Alabama", "AL"], 
+                    ["AR - Arkansas", "AR"], 
+                    ["AS - American Samoa", "AS"], 
+                    ["AZ - Arizona", "AZ"], 
+                    ["CA - California", "CA"], 
+                    ["CO - Colorado", "CO"], 
+                    ["CT - Connecticut", "CT"], 
+                    ["DC - District of Columbia", "DC"], 
+                    ["DE - Delaware", "DE"], 
+                    ["FL - Florida", "FL"], 
+                    ["GA - Georgia", "GA"], 
+                    ["GU - Guam", "GU"], 
+                    ["HI - Hawaii", "HI"], 
+                    ["IA - Iowa", "IA"], 
+                    ["ID - Idaho", "ID"], 
+                    ["IL - Illinois", "IL"], 
+                    ["IN - Indiana", "IN"], 
+                    ["KS - Kansas", "KS"], 
+                    ["KY - Kentucky", "KY"], 
+                    ["LA - Louisiana", "LA"], 
+                    ["MA - Massachusetts", "MA"], 
+                    ["MD - Maryland", "MD"], 
+                    ["ME - Maine", "ME"], 
+                    ["MI - Michigan", "MI"], 
+                    ["MN - Minnesota", "MN"], 
+                    ["MO - Missouri", "MO"], 
+                    ["MS - Mississippi", "MS"], 
+                    ["MT - Montana", "MT"], 
+                    ["NC - North Carolina", "NC"], 
+                    ["ND - North Dakota", "ND"], 
+                    ["NE - Nebraska", "NE"], 
+                    ["NH - New Hampshire", "NH"], 
+                    ["NJ - New Jersey", "NJ"], 
+                    ["NM - New Mexico", "NM"], 
+                    ["NV - Nevada", "NV"], 
+                    ["NY - New York", "NY"], 
+                    ["OH - Ohio", "OH"], 
+                    ["OK - Oklahoma", "OK"], 
+                    ["OR - Oregon", "OR"], 
+                    ["PA - Pennsylvania", "PA"], 
+                    ["PR - Puerto Rico", "PR"], 
+                    ["RI - Rhode Island", "RI"], 
+                    ["SC - South Carolina", "SC"], 
+                    ["SD - South Dakota", "SD"], 
+                    ["TN - Tennessee", "TN"], 
+                    ["TX - Texas", "TX"], 
+                    ["UT - Utah", "UT"], 
+                    ["VA - Virginia", "VA"], 
+                    ["VI - Virgin Islands", "VI"], 
+                    ["VT - Vermont", "VT"], 
+                    ["WA - Washington", "WA"], 
+                    ["WI - Wisconsin", "WI"], 
+                    ["WV - West Virginia", "WV"], 
+                    ["WY - Wyoming", "WY"]
+                    ])), :prompt => "State" %>
+            </td>
+        </tr>
+        <tr>
+            <td><%= submit_tag 'Add Event' %></td>
+        </tr>
+    </table>
+    <% end %>
+</fieldset>
+
+<div style="overflow:auto;color:red">
+    <p style="color:blue"><%= flash[:notice] %></p>
+    <% if flash[:errors] %>
+        <% flash[:errors].each do |e| %>
+        <p><%= e%></p>
+        <% end %>
+    <% end %>
+</div>
+
+<%= image_tag "events.jpg", width: "140" %>
+<% if @your_events == [] %>
+No events available at your state (<%= User.find(session[:user_id]).state %>)!
+<% end %>
+<% if @your_events != [] %>
+<p>Here are some of the events at your state (<%= @your_events.first.state %>):</p>
+
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Location</td>
+            <td>Host</td>
+            <td>Action/Status</td>
+        </tr>
+    </thead>   
+    <tbody class="zebra">
+    <% @your_events.each do |e| %>
+        <tr>
+            <td><a href="/events/<%= e.id %>"><%= e.name %></a></td>
+            <td><%= e.date %></td>
+            <td><%= e.location %></td>
+            <td><%=  e.user.first_name %></td>
+            <td>
+                <% if e.user_id == session[:user_id]%>
+                    <a href="/events/<%= e.id %>/edit">Edit</a>
+                    <%= link_to 'Delete', e, method: :delete, data: { confirm: 'Delete this event?'} %>
+                <% end %>        
+            </td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+<% end %>
+<p>Here are some of the events on other states:</p>
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Location</td>
+            <td>State</td>
+            <td>Host</td>
+            <td>Action/Status</td>
+        </tr>
+    </thead>
+    <tbody class="zebra">
+    <% @other_events.each do |e| %>
+        <tr>
+            <td><a href="/events/<%= e.id %>"><%= e.name %></a></td>
+            <td><%= e.date %></td>
+            <td><%= e.location %></td>
+            <td><%= e.state %></td>
+            <td><%=  e.user.first_name %></td>
+            <td>
+                <% if e.user_id == session[:user_id]%>
+                    <a href="/events/<%= e.id %>/edit">Edit</a>
+                    <%= link_to 'Delete', e, method: :delete, data: { confirm: 'Delete this event?'} %>
+                <% elsif e.joins.where(user_id:session[:user_id], event_id:e.id) != []%>
+                    Joining
+                    <%= link_to "Cancel", :controller => "joins", :action => "cancel", :event_id => e.id, :user_id => session[:user_id] %>
+                <% else %>
+                    <%= link_to "Join", :controller => "joins", :action => "create", :event_id => e.id, :user_id => session[:user_id] %>
+                <% end %>        
+            </td>
+        </tr>
+        <% end %>
+    </tbody>  
+</table>
