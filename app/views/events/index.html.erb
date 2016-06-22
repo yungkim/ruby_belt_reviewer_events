@@ -100,7 +100,7 @@
     <% end %>
 </div>
 
-<%= image_tag "events.jpg", width: "140" %>
+<p><%= image_tag "events.jpg", width: "140" %></p>
 <% if @your_events == [] %>
 No events available at your state (<%= User.find(session[:user_id]).state %>)!
 <% end %>

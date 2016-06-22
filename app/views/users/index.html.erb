@@ -1,6 +1,28 @@
-<h1>Welcome</h1>
+<style type="text/css">body {background:#38a0a6}</style>
+<div id="container" style="padding:4em">
+<h1>Welcome to Share Your Events!<%= image_tag "share-event.png", width: "180" %></h1>
+<p></p>
 <div style="overflow:auto">
-    <fieldset style="float:left">
+<fieldset style="max-width:400px;border-color:#ecebea;margin-bottom:1em">
+        <legend>Login</legend>
+        <%= form_for @user, :url => { :action => "login" } do |f| %>
+        <table>
+            <tr>
+                <td style="width:210px">Email:</td>
+                <td><%= f.text_field :email, :placeholder => "Email" %></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><%= f.password_field :password, :placeholder => "Password" %></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align:right"><%= submit_tag 'Login' %></td>
+            </tr>            
+        </table>
+        <% end %>
+    </fieldset>
+    <fieldset style="max-width:400px;border-color:#ecebea;">
         <legend>Registration</legend>
         <%= form_for @user, :url => { :action => "create" } do |f| %>
         <table>        
@@ -84,7 +106,7 @@
                 <td><%= f.password_field :password, :placeholder => "Password" %></td>
             </tr>
             <tr>
-                <td style="font-size:0.9em;color:grey">*Password should be at leat 8 characters</td>
+                <td style="font-size:0.9em;color:#ecebea">*Password should be at leat 8 characters</td>
             </tr>
             <tr>
                 <td>Confirm PW:</td>
@@ -97,31 +119,14 @@
         </table>
         <% end %>
     </fieldset>
-    <fieldset style="max-width:500px">
-        <legend>Login</legend>
-        <%= form_for @user, :url => { :action => "login" } do |f| %>
-        <table>
-            <tr>
-                <td>Email:</td>
-                <td><%= f.text_field :email, :placeholder => "Email" %></td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td><%= f.password_field :password, :placeholder => "Password" %></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td style="text-align:right"><%= submit_tag 'Login' %></td>
-            </tr>            
-        </table>
-        <% end %>
-    </fieldset>
+    
 </div>
 
-<div style="overflow: auto;color:red">
+<div style="overflow: auto;color:yellow">
     <% if flash[:errors] %>
         <% flash[:errors].each do |e| %>
         <p><%= e%></p>
         <% end %>
     <% end %>
+</div>
 </div>
