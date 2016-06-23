@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  # before_action :require_login, except: [:new]
+  before_action :require_login
   def index
     @your_events = Event.where(state:User.find(session[:user_id]).state)
     @other_events = Event.where.not(state:User.find(session[:user_id]).state)
@@ -13,7 +13,6 @@ class EventsController < ApplicationController
   def create
       event = Event.new(events_params)
     if event.save
-      # session[:user_id] = user.id
       redirect_to '/events'
       flash[:notice] = "Your event has been created successfully!"
     else

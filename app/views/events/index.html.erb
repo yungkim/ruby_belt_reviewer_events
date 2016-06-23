@@ -128,6 +128,11 @@ No events available at your state (<%= User.find(session[:user_id]).state %>)!
                 <% if e.user_id == session[:user_id]%>
                     <a href="/events/<%= e.id %>/edit">Edit</a>
                     <%= link_to 'Delete', e, method: :delete, data: { confirm: 'Delete this event?'} %>
+                <% elsif e.joins.where(user_id:session[:user_id], event_id:e.id) != []%>
+                    Joining
+                    <%= link_to "Cancel", :controller => "joins", :action => "cancel", :event_id => e.id, :user_id => session[:user_id] %>
+                <% else %>
+                    <%= link_to "Join", :controller => "joins", :action => "create", :event_id => e.id, :user_id => session[:user_id] %>
                 <% end %>        
             </td>
         </tr>

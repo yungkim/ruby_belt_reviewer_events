@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  # before_action :require_login, except: [:index, :create, :login]
+  before_action :require_login, except: [:index, :create, :login]
   def index
     @user = User.new #  for "<%= form_for @user, :url => { :action => "create" } do |f| %>"
   end
@@ -11,7 +11,6 @@ class UsersController < ApplicationController
     user = User.new(users_params)
     if user.save
       session[:user_id] = user.id
-      flash[:notice] = user.first_name
       redirect_to '/events'
     else
       flash[:errors] = user.errors.full_messages

@@ -1,4 +1,5 @@
 class JoinsController < ApplicationController
+  before_action :require_login
   def create
     join = Join.new(joins_params)
     join.save
