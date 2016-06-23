@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   has_secure_password
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]+)\z/i
   validates :first_name, :last_name, :location, length: { in: 2..30 }
-  validates :email, uniqueness: { case_sensitive: false }, format: { with: EMAIL_REGEX }, length: { in: 8..20 }
+  validates :email, uniqueness: { case_sensitive: false }, format: { with: EMAIL_REGEX }, length: { in: 8..40 }
   validates :state, presence: true
   validates_confirmation_of :password
 
